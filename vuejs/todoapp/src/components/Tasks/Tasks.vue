@@ -1,22 +1,25 @@
 <template>
     <div class="card mt-2" v-if="tasks.length && show">
         <ul class="list-group list-group-flush">
-            <TaskComponent v-for="task in tasks" :task="task" :key="task.id" @updated="$emit('updated',$event)" 
-            @completed="$emit('completed',$event)"
-            @removed="$emit('remove', $event)"
+            <TaskComponent v-for="task in tasks" :task="task" :key="task.id" 
+            @updated="handleUpdatedTask" 
+            @completed="handleCompletedTask"
+            @removed="handleRemovedTask"
             />
         </ul>
     </div>
 </template>
 
 <script setup>
-
+import {  useTaskStore } from "../../stores/task";
 import TaskComponent from './TaskComponent.vue';
 
+const store = useTaskStore();
+const { handleUpdatedTask, handleCompletedTask, handleRemovedTask} = store
 defineProps({
     tasks:Array,
     show : {
-        type:Boolean,
+        type:Boolean, 
         default:true
     }
 })
